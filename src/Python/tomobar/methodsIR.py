@@ -38,7 +38,7 @@ class RecToolsIR:
               DetectorsDimH,  # DetectorsDimH # detector dimension (horizontal)
               DetectorsDimV,  # DetectorsDimV # detector dimension (vertical) for 3D case only
               CenterRotOffset,  # Center of Rotation (CoR) scalar (for 3D case only)
-              AnglesVec, # array of angles in radians
+              AnglesVec, # array of angles in radians OR a (N,12) matrix containing the actual geometry.
               ObjSize, # a scalar to define reconstructed object dimensions
               datafidelity, # data fidelity, choose 'LS', 'PWLS', 'GH' (wip), 'Student' (wip)
               nonnegativity, # select 'nonnegativity' constraint (set to 'ENABLE')
@@ -55,7 +55,10 @@ class RecToolsIR:
         self.OS_number = OS_number
         self.DetectorsDimV = DetectorsDimV
         self.DetectorsDimH = DetectorsDimH
-        self.angles_number = len(AnglesVec)
+        if AnglesVec.ndim == 1:
+            self.angles_number = len(AnglesVec)
+        else:
+            self.angles_number = AnglesVec.shape[0]
         if CenterRotOffset is None:
             self.CenterRotOffset = 0.0
         else:
