@@ -227,7 +227,10 @@ class AstraTools3D:
         # define astra type geometry (scalar)
         # self.proj_geom = astra.create_proj_geom('parallel3d', 1.0, 1.0, DetRowCount, DetColumnCount, AnglesVec)
         # define astra type geometry (vector)
-        vectors = vec_geom_init(AnglesVec, 1.0, 1.0, CenterRotOffset)
+        if AnglesVec.ndim == 1:
+            vectors = vec_geom_init(AnglesVec, 1.0, 1.0, CenterRotOffset)
+        else:
+            vectors = AnglesVec
         self.proj_geom = astra.create_proj_geom('parallel3d_vec', DetRowCount, DetColumnCount, vectors)
         if type(ObjSize) == tuple:
             Y,X,Z = [int(i) for i in ObjSize]
